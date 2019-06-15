@@ -13,7 +13,7 @@ module.exports = {
   */
   dev: dev,
   head: {
-    title: 'starter',
+    title: 'Raccoon',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

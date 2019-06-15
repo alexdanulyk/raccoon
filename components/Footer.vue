@@ -1,5 +1,12 @@
 <template>
   <footer>
-    Visit our website for more documentation : <a href="https://nuxtjs.org" target="_blank">nuxtjs.org</a>
+    Footer
   </footer>
 </template>
+
+<style lang="scss">
+footer {
+  background: #EEE;
+  padding: 15px;
+}
+</style>
