@@ -1,41 +1,40 @@
 <template lang="pug">
   #catalog
     .filters
-      form
-        .item
-          .title Цветы
-          .list
-            label(v-for="flower, index in filters.flowers")
-              input(type="checkbox" name="flowers" :value="flower.iFlowerID" v-model="selected.flowers" @change="submit")
-              span {{ flower.sFlowerTitle }}
-        .item
-          .title Цветовая гамма
-          .list
-            label(v-for="color_scheme, index in filters.color_schemes")
-              input(type="checkbox" name="color_schemes" :value="color_scheme.iColorSchemeID" v-model="selected.color_schemes" @change="submit")
-              span {{ color_scheme.sColorSchemeTitle }}
-          .list
-            label(v-for="color, index in filters.colors")
-              input(type="checkbox" name="colors" :value="color.iColorID" v-model="selected.colors" @change="submit")
-              span {{ color.sColorTitle }}
-        .item
-          .title Размер букета
-          .list
-            label(v-for="size, index in filters.sizes")
-              input(type="checkbox" name="sizes" :value="size.iSizeID" v-model="selected.sizes" @change="submit")
-              span {{ size.sSizeTitle }}
-        .item
-          .title Стоимость букета
-          .list
-            label
-              input(type="radio" name="costs" :value="null" v-model="selected.costs" @change="submit")
-              span не важно
-            label(v-for="cost, index in filters.costs")
-              input(type="radio" name="costs" :value="cost.iCostID" v-model="selected.costs" @change="submit")
-              span
-                template(v-if="cost.iCostFrom") от {{ cost.iCostFrom }} 
-                template(v-if="cost.iCostTo") до {{ cost.iCostTo }} 
-                | рублей
+      .item
+        .title Цветы
+        .list
+          label(v-for="flower, index in filters.flowers")
+            input(type="checkbox" name="flowers" :value="flower.iFlowerID" v-model="selected.flowers" @change="submit")
+            span {{ flower.sFlowerTitle }}
+      .item
+        .title Цветовая гамма
+        .list
+          label(v-for="color_scheme, index in filters.color_schemes")
+            input(type="checkbox" name="color_schemes" :value="color_scheme.iColorSchemeID" v-model="selected.color_schemes" @change="submit")
+            span {{ color_scheme.sColorSchemeTitle }}
+        .list
+          label(v-for="color, index in filters.colors")
+            input(type="checkbox" name="colors" :value="color.iColorID" v-model="selected.colors" @change="submit")
+            span {{ color.sColorTitle }}
+      .item
+        .title Размер букета
+        .list
+          label(v-for="size, index in filters.sizes")
+            input(type="checkbox" name="sizes" :value="size.iSizeID" v-model="selected.sizes" @change="submit")
+            span {{ size.sSizeTitle }}
+      .item
+        .title Стоимость букета
+        .list
+          label
+            input(type="radio" name="costs" :value="null" v-model="selected.costs" @change="submit")
+            span не важно
+          label(v-for="cost, index in filters.costs")
+            input(type="radio" name="costs" :value="cost.iCostID" v-model="selected.costs" @change="submit")
+            span
+              template(v-if="cost.iCostFrom") от {{ cost.iCostFrom }} 
+              template(v-if="cost.iCostTo") до {{ cost.iCostTo }} 
+              | рублей
     .bouquets
       .selected {{ selected }}
       .wrap
