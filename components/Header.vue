@@ -2,7 +2,9 @@
     header
         nuxt-link(to="/" exact)
             img(src="~assets/img/flower.svg")
+        nuxt-link(:to="{ name: 'catalog' }" exact) Catalog
         nuxt-link(:to="{ name: 'flowers' }" exact) Flowers
+        nuxt-link(:to="{ name: 'colors' }" exact) Color
 </template>
 
 <style lang="scss">
