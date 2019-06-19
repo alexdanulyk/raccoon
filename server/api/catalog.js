@@ -147,4 +147,8 @@ router.get('/catalog', async (req, res, next) => {
   res.json(require)
 })
 
+router.get('/catalog/test', (req, res, next) => {
+  res.json([1,2,3])
+})
+
 export default router
