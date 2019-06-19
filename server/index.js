@@ -4,6 +4,11 @@ import { Nuxt, Builder } from 'nuxt'
 import api from './api'
 
 const app = express()
+
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 const host = process.env.HOST || '127.0.0.1'
 const dev = !(process.env.NODE_ENV === 'production')
 const port = process.env.PORT || (dev ? 8008 : 3000)

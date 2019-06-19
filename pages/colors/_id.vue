@@ -12,7 +12,7 @@ export default {
   asyncData ({ params, error }) {
     return axios.get('/api/colors/' + params.id)
       .then((res) => {
-        return { color: res.data }
+        return res.data
       })
       .catch((e) => {
         error({ statusCode: 404, message: 'Not found' })

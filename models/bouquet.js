@@ -12,5 +12,27 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'iBouquetID'
     })
   };
+
+  bouquets.getBouquets = async function () {
+    let bouquets = await bouquets.findAll()
+    return bouquets
+  }
+
+  bouquets.getBouquet = async function (iBouquetID) {
+    let bouquet = await bouquets.findByPk(iBouquetID, {
+      include: [
+        {
+          model: sequelize.models.bouquet_sizes,
+          include: [
+            {
+              model: sequelize.models.bouquet_flowers
+            }
+          ]
+        }
+      ]
+    })
+    return bouquet
+  }
+
   return bouquets;
 };
