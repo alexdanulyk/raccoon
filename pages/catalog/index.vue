@@ -40,7 +40,10 @@
         .bouquet(v-for="bouquet, index in bouquets")
           .title
             nuxt-link(:to="{ name: 'bouquet-id', params: { id: bouquet.iBouquetID } }") {{ bouquet.sBouquetTitle }}
-          .cost(v-if="bouquet.bouquet_sizes[0]") от {{ bouquet.bouquet_sizes[0].iCost }} рублей
+          .cost(v-if="bouquet.bouquet_sizes[0]")
+            template(v-if="bouquet.bouquet_sizes.length > 1") от 
+            | {{ bouquet.bouquet_sizes[0].iCost }}
+            | рублей
       template(v-else) Не найдено
 </template>
 
