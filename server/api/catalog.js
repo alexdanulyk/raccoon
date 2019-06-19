@@ -1,9 +1,12 @@
 import { Router } from 'express'
+import { request } from 'http';
 
 const router = Router()
 
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+
+const queryString = require('query-string')
 
 const Flower = require('../../models').flowers
 const Color_scheme = require('../../models').color_schemes
@@ -16,30 +19,30 @@ const Bouquet_size = require('../../models').bouquet_sizes
 const Bouquet_flower = require('../../models').bouquet_flowers
 
 router.get('/catalog', async (req, res, next) => {
-  let require = {}
+  let request = {}
 
-  require.filters = {}
-  require.filters.flowers = await Flower.findAll({
+  request.filters = {}
+  request.filters.flowers = await Flower.findAll({
     order: [
       ['sFlowerTitle', 'ASC']
     ]
   })  
-  require.filters.color_schemes = await Color_scheme.findAll({
+  request.filters.color_schemes = await Color_scheme.findAll({
     order: [
       ['sColorSchemeTitle', 'ASC']
     ]
   })
-  require.filters.colors = await Color.findAll({
+  request.filters.colors = await Color.findAll({
     order: [
       ['sColorTitle', 'ASC']
     ]
   })
-  require.filters.sizes = await Size.findAll({
+  request.filters.sizes = await Size.findAll({
     order: [
       ['iSizeID', 'ASC']
     ]
   })
-  require.filters.costs = await Cost.findAll({
+  request.filters.costs = await Cost.findAll({
     raw: true,
     order: [
       ['iCostFrom', 'ASC']
@@ -74,15 +77,7 @@ router.get('/catalog', async (req, res, next) => {
     })
   }
   if (req.query.costs) {
-    let cost = require.filters.costs.filter(cost => cost.iCostID == req.query.costs)
-    // if (cost[0].iCostFrom && cost[0].iCostTo) {
-    //   console.log('cost')
-    //   where_costs_between = {
-    //     iCost: {
-    //       [Op.between]: [cost[0].iCostFrom, cost[0].iCostTo]
-    //     }
-    //   }
-    // }
+    let cost = request.filters.costs.filter(cost => cost.iCostID == req.query.costs)
     if (cost[0].iCostFrom) {
       where_bouquet_size.push({
         iCost: {
@@ -99,15 +94,11 @@ router.get('/catalog', async (req, res, next) => {
     }
   }
 
-  require.bouquets = await Bouquet.findAll({
+  request.bouquets = await Bouquet.findAll({
     include: [
       {
         model: Bouquet_size,
         where: where_bouquet_size,
-        // where: where_sizes,
-        // where: where_sizes,
-        // where: where_costs_from,
-        // where: where_costs_to,
         required: true,
         include: [
           {
@@ -143,12 +134,17 @@ router.get('/catalog', async (req, res, next) => {
     ],
   })
 
-  // res.json([require.filters.costs, require.bouquets])
-  res.json(require)
-})
+  request.selected = {
+    flowers: (req.query.flowers) ? req.query.flowers : [],
+    color_schemes: (req.query.color_schemes) ? req.query.color_schemes : [],
+    colors: (req.query.colors) ? req.query.colors : [],
+    sizes: (req.query.sizes) ? req.query.sizes : [],
+    costs: (req.query.costs) ? req.query.costs : null,
+  }
 
-router.get('/catalog/test', (req, res, next) => {
-  res.json([1,2,3])
+  request.url = queryString.stringify(req.query, {arrayFormat: 'bracket'})
+
+  res.json(request)
 })
 
 export default router

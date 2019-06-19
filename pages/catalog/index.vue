@@ -48,20 +48,11 @@
 import axios from '~/plugins/axios'
 
 export default {
-  async asyncData () {
-    let { data } = await axios.get('/api/catalog')
+  async asyncData ({route, params}) {
+    let { data } = await axios.get('/api/catalog', {
+      params: route.query
+    })
     return data
-  },
-  data () {
-    return {
-      selected: {
-        flowers: [],
-        color_schemes: [],
-        colors: [],
-        sizes: [],
-        costs: null
-      }
-    }
   },
   methods: {
     submit: async function () {
@@ -69,7 +60,7 @@ export default {
         params: this.selected
       })
       this.bouquets = data.bouquets
-      // this.$router.push('/catalog?ddd=222')
+      this.$router.push('/catalog?' + String(data.url))
     }
   }
 }
