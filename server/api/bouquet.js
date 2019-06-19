@@ -154,5 +154,11 @@ router.get('/bouquets/destroy', async (req, res, next) => {
   res.json(request)
 })
 
+router.get('/bouquets/:iBouquetID', async (req, res, next) => {
+  let request = {}
+  request.bouquet = await Bouquet.getBouquet(req.params.iBouquetID)
+  res.json(request)
+})
+
 
 export default router
