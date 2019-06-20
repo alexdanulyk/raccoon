@@ -120,7 +120,6 @@ router.get('/catalog', async (req, res, next) => {
                   {
                     model: Color_color_scheme,
                     where: where_color_schemes,
-                    required: true
                   }
                 ]
               }

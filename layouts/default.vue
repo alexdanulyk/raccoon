@@ -1,7 +1,7 @@
 <template lang="pug">
-  div
+  #main
     my-header
-    main
+    section
       nuxt
     my-footer
 </template>
@@ -17,3 +17,22 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+#main {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "header" "section" "footer";
+  header {
+
+  }
+  section {
+
+  }
+  footer {
+
+  }
+}
+</style>

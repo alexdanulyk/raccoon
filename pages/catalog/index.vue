@@ -71,12 +71,14 @@ export default {
 
 <style lang="scss">
 #catalog {
-  display: flex;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 225px 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: ".filters" ".bouquets";
   .filters {
-    flex-basis: 225px;
     background: #DDDDDD;
     padding: 15px;
-    flex-shrink: 0;
     .item {
       margin-bottom: 15px;
       .title {
@@ -104,13 +106,21 @@ export default {
     }
   }
   .bouquets {
-    flex-grow: 1;
     background: #CCCCCC;
     padding: 15px;
     .wrap {
       display: grid;
       grid-gap: 15px;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      @media (max-width: 1200px) {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      @media (max-width: 800px) {
+        grid-template-columns: 1fr 1fr;
+      }
+      @media (max-width: 500px) {
+        grid-template-columns: 1fr;
+      }
       .bouquet {
         padding: 10px;
         background: white;
