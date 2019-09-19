@@ -36,14 +36,18 @@
               template(v-if="cost.iCostTo") до {{ cost.iCostTo }} 
               | рублей
     .bouquets
-      .wrap(v-if="bouquets.length")
-        .bouquet(v-for="bouquet, index in bouquets")
-          .title
-            nuxt-link(:to="{ name: 'bouquet-id', params: { id: bouquet.iBouquetID } }") {{ bouquet.sBouquetTitle }}
-          .cost(v-if="bouquet.bouquet_sizes[0]")
-            template(v-if="bouquet.bouquet_sizes.length > 1") от 
-            | {{ bouquet.bouquet_sizes[0].iCost }}
-            | рублей
+      .load(v-if="load") loading...
+      .wrap(v-if="bouquets.docs.length")
+        .list
+          .bouquet(v-for="bouquet, index in bouquets.docs")
+            .title
+              nuxt-link(:to="{ name: 'bouquet-id', params: { id: bouquet.iBouquetID } }") {{ bouquet.sBouquetTitle }}
+            //- .cost(v-if="bouquet.bouquet_sizes[0]")
+              template(v-if="bouquet.bouquet_sizes.length > 1") от 
+              | {{ bouquet.bouquet_sizes[0].iCost }}
+              | рублей
+        .buttonMore(v-if="bouquets.limit < bouquets.total")
+          button.more(@click="loadNewPageCatalog") Показать еще
       template(v-else) Не найдено
 </template>
 
@@ -55,15 +59,45 @@ export default {
     let { data } = await axios.get('/api/catalog', {
       params: route.query
     })
+    data.load = false
     return data
   },
   methods: {
     submit: async function () {
+      this.$set(this, 'load', true)
+      this.$set(this.selected, 'page', null)
       let { data } = await axios.get('/api/catalog', {
         params: this.selected
       })
-      this.bouquets = data.bouquets
+      this.$set(this, 'load', false)
+      this.$set(this, 'bouquets', data.bouquets)
       this.$router.push('/catalog?' + String(data.url))
+    },
+    loadNewPageCatalog: async function () {
+      // console.log(this.selected.page)
+      if (!this.selected.page) {
+        this.$set(this.selected, 'page', '1-2')
+        // this.selected.page = '1-2'
+      } else {
+        let page = this.selected.page.split('-')
+        this.$set(this.selected, 'page', Number(page[0]) + '-' + (Number(page[1]) + 1))
+        // console.log(page)
+
+        // let page = this.selected.page.split('-')
+        // console.log(page)
+      }
+      // this.$set(this.selected, 'page', 2)
+      // Vue.set(this.selected, 'page', 1)
+      // this.selected.page = 1
+      let { data } = await axios.get('/api/loadNewPageCatalog', {
+        params: this.selected
+      })
+      this.$set(this, 'bouquets', data.bouquets)
+      // data.bouquets.docs.forEach(bouquet => {
+      //   this.bouquets.docs.push(bouquet)
+      // })
+      this.$router.push('/catalog?' + String(data.url))
+      // console.log(data)
     }
   }
 }
@@ -109,21 +143,31 @@ export default {
     background: #CCCCCC;
     padding: 15px;
     .wrap {
-      display: grid;
-      grid-gap: 15px;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      @media (max-width: 1200px) {
-        grid-template-columns: 1fr 1fr 1fr;
+      background: red;
+      .list {
+        display: grid;
+        grid-gap: 15px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        @media (max-width: 1200px) {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+        @media (max-width: 800px) {
+          grid-template-columns: 1fr 1fr;
+        }
+        @media (max-width: 500px) {
+          grid-template-columns: 1fr;
+        }
+        .bouquet {
+          padding: 100px 10px;
+          background: white;
+        }
       }
-      @media (max-width: 800px) {
-        grid-template-columns: 1fr 1fr;
-      }
-      @media (max-width: 500px) {
-        grid-template-columns: 1fr;
-      }
-      .bouquet {
-        padding: 10px;
-        background: white;
+      .buttonMore {
+        text-align: center;
+        button {
+          padding: 10px;
+          margin: 15px 0 0;
+        }
       }
     }
   }

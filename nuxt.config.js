@@ -35,6 +35,7 @@ module.exports = {
   ** Add axios globally
   */
   build: {
+    // watch: ['models'], // Нужно для обновления содержимого на фронте при изменении
     vendor: ['axios'],
     /*
     ** Run ESLINT on save
