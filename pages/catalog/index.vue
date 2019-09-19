@@ -47,7 +47,7 @@
               | {{ bouquet.bouquet_sizes[0].iCost }}
               | рублей
         .buttonMore(v-if="bouquets.limit < bouquets.total")
-          button.more(@click="loadNewPageCatalog") Показать еще
+          button.more(@click="loadNewPageCatalog" :disabled="load") Показать еще
       template(v-else) Не найдено
 </template>
 
@@ -74,6 +74,7 @@ export default {
       this.$router.push('/catalog?' + String(data.url))
     },
     loadNewPageCatalog: async function () {
+      this.$set(this, 'load', true)
       // console.log(this.selected.page)
       if (!this.selected.page) {
         this.$set(this.selected, 'page', '1-2')
@@ -98,6 +99,7 @@ export default {
       // })
       this.$router.push('/catalog?' + String(data.url))
       // console.log(data)
+      this.$set(this, 'load', false)
     }
   }
 }
@@ -142,6 +144,18 @@ export default {
   .bouquets {
     background: #CCCCCC;
     padding: 15px;
+    position: relative;
+    .load {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translate(-50%, 0);
+      font-size: 11px;
+      line-height: 11px;
+      padding: 2px;
+      background: blue;
+      color: white;
+    }
     .wrap {
       background: red;
       .list {
