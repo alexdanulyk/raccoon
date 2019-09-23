@@ -179,6 +179,13 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     responce.total = list.count.length
+    const pluralize = require('numeralize-ru').pluralize
+    responce.totalString = pluralize(responce.total, 'букетов', 'букета', 'букетов')
+    let limitCheck = (responce.total < responce.limit) ? responce.total : responce.limit
+    console.log(limitCheck)
+    responce.limitString = pluralize(limitCheck, 'букет', 'букета', 'букетов')
+    
+
     responce.pages = Math.ceil(responce.total / responce.limit)
     responce.docs = list.rows
   
