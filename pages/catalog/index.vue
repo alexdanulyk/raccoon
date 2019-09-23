@@ -37,6 +37,8 @@
               | рублей
     .bouquets
       .load(v-if="load") loading...
+      .sorting sorting
+      .info Вы просмаотрели {{bouquets.limit}} {{bouquets.limitString}} из {{bouquets.total}} {{bouquets.totalString}}
       .wrap(v-if="bouquets.docs.length")
         .list
           .bouquet(v-for="bouquet, index in bouquets.docs")
